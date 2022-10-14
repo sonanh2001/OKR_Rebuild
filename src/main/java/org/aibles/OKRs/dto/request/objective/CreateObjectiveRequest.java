@@ -1,5 +1,6 @@
-package org.aibles.OKRs.dto.request;
+package org.aibles.OKRs.dto.request.objective;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -19,9 +20,11 @@ public class CreateObjectiveRequest {
   @NotBlank(message = "reason must not blank")
   private String reason;
 
+  @Digits(integer = 8, message = "invalid date format", fraction = 0)
   @NotNull(message = "an objective must have start date")
   private Integer startDate;
 
+  @Digits(integer = 8, message = "invalid date format", fraction = 0)
   @NotNull(message = "an objective must have due date")
   private Integer dueDate;
 

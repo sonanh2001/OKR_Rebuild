@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aibles.OKRs.dto.request.CreateObjectiveRequest;
-import org.aibles.OKRs.dto.request.UpdateObjectiveRequest;
+import org.aibles.OKRs.dto.request.objective.CreateObjectiveRequest;
+import org.aibles.OKRs.dto.request.objective.UpdateObjectiveRequest;
 import org.aibles.OKRs.dto.response.ObjectiveResponse;
 import org.aibles.OKRs.entity.Objective;
 import org.aibles.OKRs.exception.BadRequestException;
@@ -63,11 +63,33 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
   @Override
   @Transactional(readOnly = true)
+  public Boolean existsById(long id) {
+    return repository.existsById(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public ObjectiveResponse getById(long id) {
     log.info("(getById)id : {}", id);
     return repository
         .findById(id)
         .map(ObjectiveResponse::from)
+        .orElseThrow(() -> new NotFoundException(OBJECTIVE_ID_FIELD, id, OBJECTIVE_TYPE));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Long getDueDateById(long id) {
+    return repository
+        .getDueDateById(id)
+        .orElseThrow(() -> new NotFoundException(OBJECTIVE_ID_FIELD, id, OBJECTIVE_TYPE));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Long getStartDateById(long id) {
+    return repository
+        .getStartDateById(id)
         .orElseThrow(() -> new NotFoundException(OBJECTIVE_ID_FIELD, id, OBJECTIVE_TYPE));
   }
 
